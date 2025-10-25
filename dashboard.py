@@ -203,8 +203,8 @@ st.write("Klasifikasi Penyakit Daun Teh  | Deteksi Jenis Makanan")
 # =====================================================
 # Model paths dan classes
 # =====================================================
-POSSIBLE_TEA_PATHS = ["model_uts/nadia_shabrina_Laporan2.h5","nadia_shabrina_Laporan2.h5"]
-POSSIBLE_FOOD_PATHS = ["model_uts/Nadia_Laporan 4.pt"]
+POSSIBLE_TEA_PATHS = ["model_uts/nadiashabrinaLaporan2.h5","nadiashabrinaLaporan2.h5"]
+POSSIBLE_FOOD_PATHS = ["model_uts/NadiaLaporan4.pt"]
 
 def find_existing_path(candidates):
     for p in candidates:
