@@ -6,23 +6,17 @@ from PIL import Image
 import tempfile
 import pandas as pd
 
-# ================================
-# Setup folder model
-# ================================
+# Folder model
 MODEL_DIR = "Model"
 os.makedirs(MODEL_DIR, exist_ok=True)
 
-# ================================
 # Import YOLO
-# ================================
 try:
     from ultralytics import YOLO
 except Exception:
     YOLO = None
 
-# ================================
 # Download helper
-# ================================
 def download_file(url, dest_path):
     st.info(f"Mendownload file dari {url} ...")
     r = requests.get(url, stream=True)
@@ -31,15 +25,10 @@ def download_file(url, dest_path):
             f.write(chunk)
     st.success(f"File tersimpan di {dest_path}")
 
-# ================================
 # YOLO model path
-# ================================
 YOLO_MODEL_PATH = os.path.join(MODEL_DIR, "NadiaLaporan4.pt")
 YOLO_DEFAULT_URL = "https://github.com/ultralytics/ultralytics/releases/download/v8.0/yolov8n.pt"
 
-# ================================
-# Load YOLO model
-# ================================
 @st.cache_resource
 def load_yolo_model(path):
     if YOLO is None:
@@ -50,35 +39,26 @@ def load_yolo_model(path):
         download_file(YOLO_DEFAULT_URL, path)
     return YOLO(path)
 
-# ================================
-# Streamlit UI
-# ================================
-st.set_page_config(page_title="YOLO Detection Dashboard", layout="wide")
 st.title("🍽 YOLO Food Detection Dashboard")
 
 # Sidebar
 conf_thresh = st.sidebar.slider("Confidence Threshold", 0.1, 1.0, 0.45, 0.01)
 
-st.subheader("Deteksi Jenis Makanan (Meal, Dessert, Drink)")
 uploaded_food = st.file_uploader("Unggah gambar makanan", type=["jpg","jpeg","png"])
-
 if uploaded_food:
     img = Image.open(uploaded_food).convert("RGB")
-    st.image(img, caption="Gambar Diupload", use_container_width=True)
+    st.image(img, caption="Gambar Diupload", width='stretch')
 
     model_yolo = load_yolo_model(YOLO_MODEL_PATH)
-
     if model_yolo:
         with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as tmp:
             img.save(tmp.name)
             tmp_path = tmp.name
-
         try:
             results = model_yolo(tmp_path, conf=conf_thresh)
             plotted = results[0].plot()
-            st.image(Image.fromarray(plotted), caption="Hasil Deteksi", use_container_width=True)
+            st.image(Image.fromarray(plotted), caption="Hasil Deteksi", width='stretch')
 
-            # Dataframe hasil deteksi
             det_list = []
             boxes = getattr(results[0], "boxes", None)
             names = getattr(results[0], "names", None)
