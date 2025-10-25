@@ -3,4 +3,4 @@ pandas
 numpy
 Pillow
 requests
-ultralytics
+ultralytics>=8.0.0
