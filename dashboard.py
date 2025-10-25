@@ -182,6 +182,11 @@ if st.session_state.get("page") == "dashboard":
 # =====================================================
 # Sidebar + Mode + Warna
 # =====================================================
+with st.sidebar:
+    st.header("⚙ Pilih Mode")
+    mode = st.radio("Mode Analisis:", ["Klasifikasi Penyakit Daun Teh", "Deteksi Jenis Makanan"])
+    conf_thresh = 0.0 
+    st.markdown("---")
 
 # Simpan pilihan ke session_state
 st.session_state.mode = mode
