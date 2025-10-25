@@ -7,7 +7,7 @@ import tempfile
 import pandas as pd
 
 # ============================
-# Folder Model & Config
+# Folder model & config
 # ============================
 MODEL_DIR = "Model"
 os.makedirs(MODEL_DIR, exist_ok=True)
@@ -23,7 +23,7 @@ except ImportError:
     YOLO = None
 
 # ============================
-# Helper Functions
+# Helper functions
 # ============================
 def download_file(url, dest_path):
     """Download file dari URL jika tidak ada di path."""
@@ -36,7 +36,7 @@ def download_file(url, dest_path):
 
 @st.cache_resource
 def load_yolo_model(path):
-    """Load YOLO model, otomatis download jika tidak ada."""
+    """Load YOLO model, download jika tidak ada."""
     if YOLO is None:
         st.error("Ultralytics YOLO belum terinstal. Jalankan 'pip install ultralytics'.")
         return None
@@ -83,28 +83,43 @@ def extract_detections(results):
     return pd.DataFrame(det_list) if det_list else None
 
 # ============================
-# Streamlit UI
+# UI Styles
 # ============================
+def set_gradient():
+    st.markdown("""
+        <style>
+        body {
+            background: linear-gradient(135deg, #fff8e6 0%, #e6f4ea 100%);
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+set_gradient()
 st.set_page_config(page_title="🍽 YOLO Food Detection Dashboard", layout="wide")
 st.title("🍽 YOLO Food Detection Dashboard")
 
+# ============================
 # Sidebar
+# ============================
+st.sidebar.header("⚙ Pengaturan Deteksi")
 conf_thresh = st.sidebar.slider("Confidence Threshold", 0.1, 1.0, 0.45, 0.01)
 
-# Upload image
-uploaded_food = st.file_uploader("Unggah gambar makanan", type=["jpg", "jpeg", "png"])
+# ============================
+# Upload Image
+# ============================
+uploaded_food = st.file_uploader("Unggah gambar makanan", type=["jpg","jpeg","png"])
 if uploaded_food:
     img = Image.open(uploaded_food).convert("RGB")
     st.image(img, caption="Gambar Diupload", width='stretch')
 
-    # Load model
+    # Load YOLO model
     model_yolo = load_yolo_model(YOLO_MODEL_PATH)
     if model_yolo:
-        # Inferensi
+        # Run inference
         results, plotted_img = run_yolo_inference(model_yolo, img, conf_thresh)
         st.image(plotted_img, caption="Hasil Deteksi", width='stretch')
 
-        # Ekstrak deteksi
+        # Extract detections
         df = extract_detections(results)
         if df is not None and not df.empty:
             st.subheader("📋 Daftar Deteksi")
@@ -112,8 +127,10 @@ if uploaded_food:
             st.subheader("📊 Ringkasan Kategori")
             st.bar_chart(df["label"].value_counts())
             st.download_button(
-                "⬇ Download CSV", df.to_csv(index=False).encode("utf-8"),
-                "results.csv", "text/csv"
+                "⬇ Download CSV",
+                df.to_csv(index=False).encode("utf-8"),
+                "detection_results.csv",
+                "text/csv"
             )
         else:
             st.warning("Tidak ada objek terdeteksi di atas threshold.")
