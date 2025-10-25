@@ -139,6 +139,7 @@ if st.session_state.page == "home":
     st.markdown("---")
     st.markdown(""" Dikembangkan Oleh: Nadia Shabrina | Universitas Syiah Kuala
     """)
+    st.markdown("---")
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         if st.button("Mulai Dashboard", use_container_width=True):
