@@ -142,7 +142,7 @@ if st.session_state.page == "home":
     st.markdown("---")
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        if st.button("Mulai Dashboard", use_container_width=True):
+        if st.button("Klik Untuk Memulai Dashboard", use_container_width=True):
             st.session_state.page = "dashboard"
             st.rerun()
     st.stop()
