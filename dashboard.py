@@ -185,7 +185,8 @@ if st.session_state.get("page") == "dashboard":
 with st.sidebar:
     st.header("⚙ Pilih Mode")
     mode = st.radio("Mode Analisis:", ["Klasifikasi Penyakit Daun Teh", "Deteksi Jenis Makanan"])
-    conf_thresh >= 0.25 
+    conf_thresh = 0.2
+    results = model_yolo(tmp_path, conf=conf_thresh) 
     st.markdown("---")
 
 # Simpan pilihan ke session_state
