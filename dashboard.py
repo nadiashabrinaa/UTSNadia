@@ -9,7 +9,7 @@ import pandas as pd
 # ============================
 # Folder model & config
 # ============================
-MODEL_DIR = "Model"
+MODEL_DIR = "model_uts"
 os.makedirs(MODEL_DIR, exist_ok=True)
 YOLO_MODEL_PATH = os.path.join(MODEL_DIR, "NadiaLaporan4.pt")
 YOLO_DEFAULT_URL = "https://github.com/ultralytics/ultralytics/releases/download/v8.0/yolov8n.pt"
