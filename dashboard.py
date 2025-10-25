@@ -127,6 +127,9 @@ if st.session_state.page == "home":
     - ☁ *Ramah Pengguna* – Tidak perlu instalasi tambahan, cukup unggah gambar  
     """)
     st.markdown("---")
+    st.markdown(""" Dikembangkan Oleh: Nadia Shabrina | Universitas Syiah Kuala
+    """)
+    st.markdown("---")
     st.markdown("### Kegunaan Dashboard")
     st.markdown("""
     Dashboard ini dirancang untuk membantu penelitian, pembelajaran, dan demonstrasi teknologi
